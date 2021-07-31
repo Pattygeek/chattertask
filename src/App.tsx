@@ -5,11 +5,13 @@ import makeStyles from "@material-ui/styles/makeStyles";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
 import CloseIcon from "@material-ui/icons/Close";
+import { Selection, EventCard } from "./components";
+import { useFetch } from "./utils/useFetch";
 
-function App() {
+const App = () => {
 	const useStyles = makeStyles(() => ({
 		main: {
-			height: "100vh",
+			minHeight: "100vh",
 			width: "100vw",
 			background: "#f7f7f7",
 			display: "flex",
@@ -19,41 +21,6 @@ function App() {
 			width: "30%",
 			border: "1px solid black",
 			margin: "auto",
-		},
-		event: {
-			border: "1px solid black",
-			marginBottom: "20px",
-			"&:last-child": {
-				marginBottom: 0,
-			},
-		},
-		button: {
-			borderRadius: "4px",
-			border: "1px solid black",
-			textAlign: "center",
-			padding: "6px 0",
-			width: "130px",
-		},
-		scorerBtn: {
-			borderRadius: "4px",
-			border: "1px solid black",
-			textAlign: "center",
-			padding: "6px 0",
-			width: "100px",
-		},
-		match: {
-			textAlign: "center",
-			border: "1px solid black",
-			padding: "16px 0",
-			fontWeight: "bold",
-		},
-		paragraph: {
-			marginTop: 0,
-			marginBottom: 0,
-		},
-		win: {
-			marginTop: 0,
-			marginBottom: 12,
 		},
 		icon: {
 			cursor: "pointer",
@@ -71,6 +38,8 @@ function App() {
 		setOpen(!open);
 	};
 
+	useFetch();
+
 	return (
 		<Fragment>
 			<Box className={classes.main}>
@@ -83,55 +52,8 @@ function App() {
 						/>
 					</Box>
 					<Box padding={3}>
-						<Box className={classes.event}>
-							<Box className={classes.match}>Man United vs Chelsea</Box>
-							<Box padding={2}>
-								<p className={classes.win}>To WIN</p>
-								<Box display="flex" justifyContent="space-between">
-									<Box className={classes.button}>
-										<p className={classes.paragraph}>Man United</p>
-										<p className={classes.paragraph}>1.2</p>
-									</Box>
-									<Box className={classes.button}>
-										<p className={classes.paragraph}>Chelsea</p>
-										<p className={classes.paragraph}>2.2</p>
-									</Box>
-								</Box>
-							</Box>
-						</Box>
-						<Box className={classes.event}>
-							<Box className={classes.match}>Man United vs Chelsea</Box>
-							<Box padding={2}>
-								<p className={classes.win}>To WIN</p>
-								<Box display="flex" justifyContent="space-between">
-									<Box className={classes.button}>
-										<p className={classes.paragraph}>Man United</p>
-										<p className={classes.paragraph}>1.2</p>
-									</Box>
-									<Box className={classes.button}>
-										<p className={classes.paragraph}>Chelsea</p>
-										<p className={classes.paragraph}>2.2</p>
-									</Box>
-								</Box>
-							</Box>
-							<Box padding={2} borderTop={1}>
-								<p className={classes.win}>To Score First</p>
-								<Box display="flex" justifyContent="space-between">
-									<Box className={classes.scorerBtn}>
-										<p className={classes.paragraph}>Alexis</p>
-										<p className={classes.paragraph}>3.1</p>
-									</Box>
-									<Box className={classes.scorerBtn}>
-										<p className={classes.paragraph}>Girond</p>
-										<p className={classes.paragraph}>2.2</p>
-									</Box>
-									<Box className={classes.scorerBtn}>
-										<p className={classes.paragraph}>Lacazette</p>
-										<p className={classes.paragraph}>2.2</p>
-									</Box>
-								</Box>
-							</Box>
-						</Box>
+						<EventCard />
+						<EventCard />
 					</Box>
 				</Box>
 			</Box>
@@ -144,10 +66,11 @@ function App() {
 							className={classes.icon}
 						/>
 					</Box>
+					<Selection />
 				</Box>
 			</Drawer>
 		</Fragment>
 	);
-}
+};
 
 export default App;
