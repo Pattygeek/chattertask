@@ -5,7 +5,7 @@ import makeStyles from "@material-ui/styles/makeStyles";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
 import CloseIcon from "@material-ui/icons/Close";
-import { Selection, EventCard } from "./components";
+import { Selection, EventCard, Loader } from "./components";
 import { useFetch } from "./utils/useFetch";
 import { AppContext } from "./utils/globalState/store";
 
@@ -44,35 +44,43 @@ const App = () => {
 	//context
 	const { state } = useContext(AppContext);
 
-	const { data, selections } = state;
+	const { data, selections, status } = state;
 
 	console.log("state", state);
 
 	return (
 		<Fragment>
 			<Box className={classes.main}>
-				<Box className={classes.innerBox}>
-					<Box border={1} display="flex" justifyContent="flex-end" padding={1}>
-						<MenuIcon
-							fontSize="large"
-							className={classes.icon}
-							onClick={toggleDrawer}
-						/>
-					</Box>
-					<Box padding={3}>
-						{data.map((item) => (
-							<EventCard
-								key={item.id}
-								name={item.name}
-								teamSelections={item?.markets?.[0]?.selections}
-								playerSelections={item?.markets?.[1]?.selections}
-								markets={item.markets}
-								teamMarketID={item?.markets?.[0]?.id}
-								playerMarketID={item?.markets?.[1]?.id}
+				{status === "fetching" && <Loader />}
+				{data.length !== 0 && (
+					<Box className={classes.innerBox}>
+						<Box
+							border={1}
+							display="flex"
+							justifyContent="flex-end"
+							padding={1}
+						>
+							<MenuIcon
+								fontSize="large"
+								className={classes.icon}
+								onClick={toggleDrawer}
 							/>
-						))}
+						</Box>
+						<Box padding={3}>
+							{data.map((item) => (
+								<EventCard
+									key={item.id}
+									name={item.name}
+									teamSelections={item?.markets?.[0]?.selections}
+									playerSelections={item?.markets?.[1]?.selections}
+									markets={item.markets}
+									teamMarketID={item?.markets?.[0]?.id}
+									playerMarketID={item?.markets?.[1]?.id}
+								/>
+							))}
+						</Box>
 					</Box>
-				</Box>
+				)}
 			</Box>
 			<Drawer anchor={"right"} open={open} onClose={toggleDrawer}>
 				<Box p={4} className={classes.drawerBox}>

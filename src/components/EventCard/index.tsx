@@ -90,7 +90,7 @@ const Event: FC<IEvent> = ({
 		price: number,
 		marketID: string
 	) => {
-		setSelectedTeam({ name: name, price: price, selected: true });
+		setSelectedTeam({ name, price, selected: true });
 		dispatch({
 			type: ActionType.SELECTIONS,
 			payload: { id, name, price, marketID, type: "Win" },
@@ -103,7 +103,7 @@ const Event: FC<IEvent> = ({
 		price: number,
 		playerID: string
 	) => {
-		setSelectedPlayer({ name: name, price: price, selected: true });
+		setSelectedPlayer({ name, price, selected: true });
 		dispatch({
 			type: ActionType.SELECTIONS,
 			payload: { id, name, price, marketID: playerID, type: "Score First" },

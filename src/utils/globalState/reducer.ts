@@ -1,7 +1,6 @@
 import {
 	ActionType,
 	InitialState,
-	SelectionType,
 	SelectedType,
 } from "../types";
 
@@ -59,7 +58,7 @@ const Reducer = (state: InitialState, action: any) => {
 			return {
 				...state,
 				selections: state.selections.filter(
-					(selection: SelectionType) => selection.id !== payload.id
+					(selection: SelectedType) => selection.id !== payload.id
 				),
 			};
 		default:
