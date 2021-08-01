@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useContext } from "react";
 import "./App.css";
 import Box from "@material-ui/core/Box";
 import makeStyles from "@material-ui/styles/makeStyles";
@@ -7,6 +7,7 @@ import Drawer from "@material-ui/core/Drawer";
 import CloseIcon from "@material-ui/icons/Close";
 import { Selection, EventCard } from "./components";
 import { useFetch } from "./utils/useFetch";
+import { AppContext } from "./utils/globalState/store";
 
 const App = () => {
 	const useStyles = makeStyles(() => ({
@@ -40,6 +41,13 @@ const App = () => {
 
 	useFetch();
 
+	//context
+	const { state } = useContext(AppContext);
+
+	const { data, selections } = state;
+
+	console.log("state", state);
+
 	return (
 		<Fragment>
 			<Box className={classes.main}>
@@ -52,8 +60,17 @@ const App = () => {
 						/>
 					</Box>
 					<Box padding={3}>
-						<EventCard />
-						<EventCard />
+						{data.map((item) => (
+							<EventCard
+								key={item.id}
+								name={item.name}
+								teamSelections={item?.markets?.[0]?.selections}
+								playerSelections={item?.markets?.[1]?.selections}
+								markets={item.markets}
+								teamMarketID={item?.markets?.[0]?.id}
+								playerMarketID={item?.markets?.[1]?.id}
+							/>
+						))}
 					</Box>
 				</Box>
 			</Box>
@@ -66,7 +83,9 @@ const App = () => {
 							className={classes.icon}
 						/>
 					</Box>
-					<Selection />
+					{selections.map((selection) => (
+						<Selection {...selection} key={selection.id} />
+					))}
 				</Box>
 			</Drawer>
 		</Fragment>

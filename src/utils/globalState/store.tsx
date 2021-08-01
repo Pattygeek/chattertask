@@ -1,6 +1,6 @@
 import { createContext, useReducer, Dispatch } from "react";
 import Reducer from "./reducer";
-import { InitialState, AppActions } from "../types";
+import { InitialState } from "../types";
 
 const initialState: InitialState = {
 	data: [],
@@ -12,7 +12,7 @@ const initialState: InitialState = {
 //create context for the appplication
 export const AppContext = createContext<{
 	state: InitialState;
-	dispatch: Dispatch<AppActions>;
+	dispatch: Dispatch<any>;
 }>({
 	state: initialState,
 	dispatch: () => null,

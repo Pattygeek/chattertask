@@ -9,10 +9,10 @@ type EventType = {
 };
 
 /** Market Entity */
-type MarketType = {
+export type MarketType = {
 	id: string;
 	name: string;
-	markets: SelectionType[];
+	selections: SelectionType[];
 };
 
 /** Selection Entity */
@@ -20,6 +20,14 @@ export type SelectionType = {
 	id: string;
 	name: string;
 	price: number;
+};
+
+export type SelectedType = {
+	id: string;
+	name: string;
+	price: number;
+	marketID: string;
+	type: string;
 };
 
 export enum ActionType {
@@ -30,28 +38,18 @@ export enum ActionType {
 	DELETE_SELECTION = "DELETE_SELECTION",
 }
 
-type ActionMap<M extends { [index: string]: any }> = {
-	[Key in keyof M]: M[Key] extends undefined
-		? { type: Key }
-		: { type: Key; payload: M[Key] };
-};
-
-export type Payload = {
-	[ActionType.FETCHING_DATA]: string;
-	[ActionType.FETCHED_DATA]: ResponseType;
-	[ActionType.FETCH_ERROR]: {
-		status: string;
-		error: any;
-	};
-	[ActionType.SELECTIONS]: SelectionType;
-	[ActionType.DELETE_SELECTION]: SelectionType;
-};
-
-export type AppActions = ActionMap<Payload>[keyof ActionMap<Payload>];
-
 export type InitialState = {
 	data: ResponseType;
 	status: string;
 	error: any;
-	selections: SelectionType[];
+	selections: SelectedType[];
 };
+
+export interface IEvent {
+	name: string;
+	teamSelections: SelectionType[];
+	playerSelections: SelectionType[];
+	markets: MarketType[] | [];
+	teamMarketID: string;
+	playerMarketID: string;
+}

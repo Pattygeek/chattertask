@@ -1,4 +1,9 @@
-import { ActionType, AppActions, InitialState, SelectionType } from "../types";
+import {
+	ActionType,
+	InitialState,
+	SelectionType,
+	SelectedType,
+} from "../types";
 
 const Reducer = (state: InitialState, action: any) => {
 	const { type, payload } = action;
@@ -23,9 +28,32 @@ const Reducer = (state: InitialState, action: any) => {
 				error: payload,
 			};
 		case ActionType.SELECTIONS:
+			let arrSelect: SelectedType[] = [...state.selections];
+
+			const exist = arrSelect.some(
+				(el: SelectedType) => el.marketID === payload.marketID
+			);
+
+			if (!exist) {
+				arrSelect.push(payload);
+				state.selections.push(payload);
+			} else {
+				arrSelect.push(payload);
+				arrSelect = arrSelect.filter(
+					(selection: SelectedType) =>
+						selection.marketID === payload.marketID &&
+						selection.id === payload.id
+				);
+			}
+			const result: SelectedType[] = state.selections.map(
+				(obj: SelectedType) =>
+					arrSelect.find((o: SelectedType) => o.marketID === obj.marketID) ||
+					obj
+			);
+
 			return {
 				...state,
-				selections: [...state.selections, payload],
+				selections: result,
 			};
 		case ActionType.DELETE_SELECTION:
 			return {

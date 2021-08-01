@@ -1,8 +1,18 @@
-import { FC, useState } from "react";
+import { FC, useState, useContext } from "react";
 import Box from "@material-ui/core/Box";
 import makeStyles from "@material-ui/styles/makeStyles";
+import { SelectionType } from "../../utils/types";
+import { AppContext } from "../../utils/globalState/store";
+import { ActionType, IEvent } from "../../utils/types";
 
-const Event: FC = () => {
+const Event: FC<IEvent> = ({
+	name,
+	teamSelections,
+	playerSelections,
+	markets,
+	playerMarketID,
+	teamMarketID,
+}) => {
 	const useStyles = makeStyles(() => ({
 		event: {
 			border: "1px solid black",
@@ -33,6 +43,14 @@ const Event: FC = () => {
 			padding: "6px 0",
 			width: "100px",
 		},
+		scorerBtnSelected: {
+			borderRadius: "4px",
+			border: "1px solid black",
+			textAlign: "center",
+			padding: "6px 0",
+			width: "100px",
+			background: "green",
+		},
 		match: {
 			textAlign: "center",
 			border: "1px solid black",
@@ -51,77 +69,111 @@ const Event: FC = () => {
 
 	const classes = useStyles();
 
-	const [selected, setSelected] = useState({
-		club: "",
-		point: 0.0,
+	//context
+	const { dispatch } = useContext(AppContext);
+
+	const [selectedTeam, setSelectedTeam] = useState({
+		name: "",
+		price: 0.0,
 		selected: false,
 	});
 
-	const handleSelect = (club: string, point: number) => {
-		setSelected({ club: club, point: point, selected: true });
+	const [selectedPlayer, setSelectedPlayer] = useState({
+		name: "",
+		price: 0.0,
+		selected: false,
+	});
+
+	const handleSelectedTeam = (
+		id: string,
+		name: string,
+		price: number,
+		marketID: string
+	) => {
+		setSelectedTeam({ name: name, price: price, selected: true });
+		dispatch({
+			type: ActionType.SELECTIONS,
+			payload: { id, name, price, marketID, type: "Win" },
+		});
 	};
 
-	console.log(selected);
+	const handleSelectedPlayer = (
+		id: string,
+		name: string,
+		price: number,
+		playerID: string
+	) => {
+		setSelectedPlayer({ name: name, price: price, selected: true });
+		dispatch({
+			type: ActionType.SELECTIONS,
+			payload: { id, name, price, marketID: playerID, type: "Score First" },
+		});
+	};
 
-	const data = [
-		{
-			club: "Man United",
-			point: 2.1,
-		},
-		{
-			club: "Chelsea",
-			point: 1.2,
-		},
-	];
+	// console.log(selected);
 
 	return (
 		<>
-			<Box className={classes.event}>
-				<Box className={classes.match}>Man United vs Chelsea</Box>
-				<Box padding={2}>
-					<p className={classes.win}>To WIN</p>
-					<Box display="flex" justifyContent="space-between">
-						{data.map((item) => (
-							<Box
-								className={
-									selected.club === item.club
-										? classes.btnSelected
-										: classes.button
-								}
-								onClick={() => handleSelect(item.club, item.point)}
-							>
-								<p className={classes.paragraph}>{item.club}</p>
-								<p className={classes.paragraph}>{item.point}</p>
-							</Box>
-						))}
+			{markets?.length !== 0 && (
+				<Box className={classes.event}>
+					<Box className={classes.match}>{name}</Box>
+					<Box padding={2}>
+						<p className={classes.win}>To WIN</p>
+						<Box display="flex" justifyContent="space-between">
+							{teamSelections?.map((team: SelectionType) => (
+								<Box
+									key={team.id}
+									className={
+										selectedTeam.name === team.name
+											? classes.btnSelected
+											: classes.button
+									}
+									onClick={() =>
+										handleSelectedTeam(
+											team.id,
+											team.name,
+											team.price,
+											teamMarketID
+										)
+									}
+								>
+									<p className={classes.paragraph}>{team.name}</p>
+									<p className={classes.paragraph}>{team.price}</p>
+								</Box>
+							))}
+						</Box>
+					</Box>
 
-						{/* <Box
-							className={classes.button}
-							onClick={() => handleSelect("Chel", 2.1)}
-						>
-							<p className={classes.paragraph}>Chelsea</p>
-							<p className={classes.paragraph}>2.2</p>
-						</Box> */}
-					</Box>
+					{playerSelections !== undefined && (
+						<Box padding={2} borderTop={1}>
+							<p className={classes.win}>To Score First</p>
+							<Box display="flex" justifyContent="space-between">
+								{playerSelections?.map((player: SelectionType) => (
+									<Box
+										className={
+											selectedPlayer.name === player.name
+												? classes.scorerBtnSelected
+												: classes.scorerBtn
+										}
+										key={player.id}
+										onClick={() =>
+											handleSelectedPlayer(
+												player.id,
+												player.name,
+												player.price,
+												playerMarketID
+											)
+										}
+									>
+										<p className={classes.paragraph}>{player.name}</p>
+										<p className={classes.paragraph}>{player.price}</p>
+									</Box>
+								))}
+							</Box>
+						</Box>
+					)}
 				</Box>
-				<Box padding={2} borderTop={1}>
-					<p className={classes.win}>To Score First</p>
-					<Box display="flex" justifyContent="space-between">
-						<Box className={classes.scorerBtn}>
-							<p className={classes.paragraph}>Alexis</p>
-							<p className={classes.paragraph}>3.1</p>
-						</Box>
-						<Box className={classes.scorerBtn}>
-							<p className={classes.paragraph}>Girond</p>
-							<p className={classes.paragraph}>2.2</p>
-						</Box>
-						<Box className={classes.scorerBtn}>
-							<p className={classes.paragraph}>Lacazette</p>
-							<p className={classes.paragraph}>2.2</p>
-						</Box>
-					</Box>
-				</Box>
-			</Box>
+			)}
 		</>
 	);
 };
