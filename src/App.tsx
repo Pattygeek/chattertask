@@ -8,7 +8,6 @@ import CloseIcon from "@material-ui/icons/Close";
 import { Selection, EventCard, Loader, Error } from "./components";
 import { useFetch } from "./utils/useFetch";
 import { AppContext } from "./utils/globalState/store";
-// import { Theme } from "@material-ui/core/styles/createTheme";
 
 const App = () => {
 	const useStyles = makeStyles((theme) => ({
@@ -54,14 +53,13 @@ const App = () => {
 		setOpen(!open);
 	};
 
+	//hook to fetch data from external api
 	useFetch();
 
 	//context
 	const { state } = useContext(AppContext);
 
 	const { data, selections, status } = state;
-
-	console.log("state", state);
 
 	return (
 		<Fragment>

@@ -1,4 +1,4 @@
-import { FC, useState, useContext } from "react";
+import { FC, useContext } from "react";
 import Box from "@material-ui/core/Box";
 import makeStyles from "@material-ui/styles/makeStyles";
 import { SelectionType } from "../../utils/types";
@@ -92,46 +92,22 @@ const Event: FC<IEvent> = ({
 
 	const { selections } = state;
 
-	const [selectedTeam, setSelectedTeam] = useState({
-		name: "",
-		price: 0.0,
-		selected: false,
-	});
-
-	const [selectedPlayer, setSelectedPlayer] = useState({
-		name: "",
-		price: 0.0,
-		selected: false,
-	});
-
-	const handleSelectedTeam = (
+	//function to handle selections
+	const handleSelections = (
 		id: string,
 		name: string,
 		price: number,
-		marketID: string
+		marketID: string,
+		type: string
 	) => {
-		setSelectedTeam({ name, price, selected: true });
 		dispatch({
 			type: ActionType.SELECTIONS,
-			payload: { id, name, price, marketID, type: "Win" },
+			payload: { id, name, price, marketID, type },
 		});
 	};
 
-	const handleSelectedPlayer = (
-		id: string,
-		name: string,
-		price: number,
-		playerID: string
-	) => {
-		setSelectedPlayer({ name, price, selected: true });
-		dispatch({
-			type: ActionType.SELECTIONS,
-			payload: { id, name, price, marketID: playerID, type: "Score First" },
-		});
-	};
-
-	// console.log(selected);
-	const select = (name: string) => {
+	//function to handle classname for active state
+	const selectedClassName = (name: string) => {
 		let selected: boolean | undefined = undefined;
 
 		for (let i = 0; i < selections.length; i++) {
@@ -159,14 +135,17 @@ const Event: FC<IEvent> = ({
 								<Box
 									key={team.id}
 									className={
-										select(team.name) ? classes.btnSelected : classes.button
+										selectedClassName(team.name)
+											? classes.btnSelected
+											: classes.button
 									}
 									onClick={() =>
-										handleSelectedTeam(
+										handleSelections(
 											team.id,
 											team.name,
 											team.price,
-											teamMarketID
+											teamMarketID,
+											"Win"
 										)
 									}
 								>
@@ -184,17 +163,18 @@ const Event: FC<IEvent> = ({
 								{playerSelections?.map((player: SelectionType) => (
 									<Box
 										className={
-											select(player.name)
+											selectedClassName(player.name)
 												? classes.scorerBtnSelected
 												: classes.scorerBtn
 										}
 										key={player.id}
 										onClick={() =>
-											handleSelectedPlayer(
+											handleSelections(
 												player.id,
 												player.name,
 												player.price,
-												playerMarketID
+												playerMarketID,
+												"Score First"
 											)
 										}
 									>
