@@ -1,33 +1,48 @@
 import { Fragment, useState, useContext } from "react";
 import "./App.css";
 import Box from "@material-ui/core/Box";
-import makeStyles from "@material-ui/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
 import CloseIcon from "@material-ui/icons/Close";
-import { Selection, EventCard, Loader } from "./components";
+import { Selection, EventCard, Loader, Error } from "./components";
 import { useFetch } from "./utils/useFetch";
 import { AppContext } from "./utils/globalState/store";
+// import { Theme } from "@material-ui/core/styles/createTheme";
 
 const App = () => {
-	const useStyles = makeStyles(() => ({
+	const useStyles = makeStyles((theme) => ({
 		main: {
 			minHeight: "100vh",
 			width: "100vw",
 			background: "#f7f7f7",
 			display: "flex",
+			[theme.breakpoints.down("sm")]: {
+				minHeight: "auto",
+			},
 		},
 		innerBox: {
 			minHeight: "50%",
 			width: "30%",
-			border: "1px solid black",
 			margin: "auto",
+			[theme.breakpoints.down("sm")]: {
+				height: "100vh",
+				width: "100%",
+			},
 		},
 		icon: {
+			cursor: "pointer",
+			color: "whitesmoke",
+		},
+		closeIcon: {
 			cursor: "pointer",
 		},
 		drawerBox: {
 			width: "35vh",
+		},
+		header: {
+			borderTopLeftRadius: "4px",
+			borderTopRightRadius: "4px",
 		},
 	}));
 
@@ -52,13 +67,15 @@ const App = () => {
 		<Fragment>
 			<Box className={classes.main}>
 				{status === "fetching" && <Loader />}
+				{status === "error" && <Error />}
 				{data.length !== 0 && (
-					<Box className={classes.innerBox}>
+					<Box className={classes.innerBox} bgcolor="white" borderRadius={4}>
 						<Box
-							border={1}
 							display="flex"
 							justifyContent="flex-end"
 							padding={1}
+							bgcolor="#2E8B57"
+							className={classes.header}
 						>
 							<MenuIcon
 								fontSize="large"
@@ -88,7 +105,7 @@ const App = () => {
 						<CloseIcon
 							onClick={toggleDrawer}
 							fontSize="large"
-							className={classes.icon}
+							className={classes.closeIcon}
 						/>
 					</Box>
 					{selections.map((selection) => (

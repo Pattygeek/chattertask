@@ -15,7 +15,6 @@ const Event: FC<IEvent> = ({
 }) => {
 	const useStyles = makeStyles(() => ({
 		event: {
-			border: "1px solid black",
 			marginBottom: "20px",
 			"&:last-child": {
 				marginBottom: 0,
@@ -23,39 +22,53 @@ const Event: FC<IEvent> = ({
 		},
 		button: {
 			borderRadius: "4px",
-			border: "1px solid black",
 			textAlign: "center",
 			padding: "6px 0",
 			width: "130px",
+			background: "#f7f7f7",
+			cursor: "pointer",
+			"&:hover": {
+				background: "#2E8B57",
+				color: "whitesmoke",
+			},
 		},
 		btnSelected: {
 			borderRadius: "4px",
-			border: "1px solid black",
 			textAlign: "center",
 			padding: "6px 0",
 			width: "130px",
-			background: "green",
+			background: "#2E8B57",
+			color: "whitesmoke",
+			cursor: "pointer",
 		},
 		scorerBtn: {
 			borderRadius: "4px",
-			border: "1px solid black",
 			textAlign: "center",
 			padding: "6px 0",
 			width: "100px",
+			background: "#f7f7f7",
+			cursor: "pointer",
+			"&:hover": {
+				background: "#2E8B57",
+				color: "whitesmoke",
+			},
 		},
 		scorerBtnSelected: {
 			borderRadius: "4px",
-			border: "1px solid black",
 			textAlign: "center",
 			padding: "6px 0",
 			width: "100px",
-			background: "green",
+			background: "#2E8B57",
+			cursor: "pointer",
 		},
 		match: {
 			textAlign: "center",
-			border: "1px solid black",
 			padding: "16px 0",
 			fontWeight: "bold",
+			background: "#d5e8dd",
+			borderTopRightRadius: "4px",
+			borderTopLeftRadius: "4px",
+			color: "#2E8B57",
 		},
 		paragraph: {
 			marginTop: 0,
@@ -115,7 +128,12 @@ const Event: FC<IEvent> = ({
 	return (
 		<>
 			{markets?.length !== 0 && (
-				<Box className={classes.event}>
+				<Box
+					className={classes.event}
+					border={1}
+					borderRadius={4}
+					borderColor="#dedede"
+				>
 					<Box className={classes.match}>{name}</Box>
 					<Box padding={2}>
 						<p className={classes.win}>To WIN</p>
@@ -123,6 +141,7 @@ const Event: FC<IEvent> = ({
 							{teamSelections?.map((team: SelectionType) => (
 								<Box
 									key={team.id}
+									boxShadow={1}
 									className={
 										selectedTeam.name === team.name
 											? classes.btnSelected
@@ -145,7 +164,7 @@ const Event: FC<IEvent> = ({
 					</Box>
 
 					{playerSelections !== undefined && (
-						<Box padding={2} borderTop={1}>
+						<Box padding={2} borderTop={1} borderColor="#dedede">
 							<p className={classes.win}>To Score First</p>
 							<Box display="flex" justifyContent="space-between">
 								{playerSelections?.map((player: SelectionType) => (
@@ -155,6 +174,7 @@ const Event: FC<IEvent> = ({
 												? classes.scorerBtnSelected
 												: classes.scorerBtn
 										}
+										boxShadow={1}
 										key={player.id}
 										onClick={() =>
 											handleSelectedPlayer(

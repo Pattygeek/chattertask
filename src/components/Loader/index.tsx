@@ -22,7 +22,7 @@ const Loader = (): JSX.Element => {
 				alignContent="center"
 			>
 				<BounceLoader
-					// color={color}
+					color={"#2E8B57"}
 					loading={loading}
 					css={override}
 					size={150}

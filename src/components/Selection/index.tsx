@@ -13,6 +13,17 @@ const Selection: FC<SelectedType> = ({ name, price, type, id, marketID }) => {
 			fontSize: "20px",
 			textAlign: "center",
 		},
+		btn: {
+			background: "#2E8B57",
+			color: "white",
+			textTransform: "capitalize",
+		},
+		box: {
+			borderBottom: "1px solid #c4c4c4",
+			"&:last-child": {
+				borderBottom: "none",
+			},
+		},
 	}));
 
 	const classes = useStyles();
@@ -29,10 +40,15 @@ const Selection: FC<SelectedType> = ({ name, price, type, id, marketID }) => {
 
 	return (
 		<>
-			<Box textAlign="center">
+			<Box textAlign="center" className={classes.box}>
 				<p>{`${name} to ${type}`}</p>
 				<p className={classes.point}>{price}</p>
-				<Button disableElevation variant="contained" onClick={removeSelection}>
+				<Button
+					disableElevation
+					variant="contained"
+					onClick={removeSelection}
+					className={classes.btn}
+				>
 					Delete
 				</Button>
 			</Box>
