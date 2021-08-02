@@ -2,7 +2,7 @@ import { createContext, useReducer, Dispatch } from "react";
 import Reducer from "./reducer";
 import { InitialState } from "../types";
 
-const initialState: InitialState = {
+export const initialState: InitialState = {
 	data: [],
 	status: "idle",
 	error: null,

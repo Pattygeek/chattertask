@@ -20,6 +20,7 @@ const Loader = (): JSX.Element => {
 				display="flex"
 				justifyContent="center"
 				alignContent="center"
+				data-testid="fetching"
 			>
 				<BounceLoader
 					color={"#2E8B57"}

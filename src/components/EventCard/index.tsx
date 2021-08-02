@@ -126,6 +126,7 @@ const Event: FC<IEvent> = ({
 					border={1}
 					borderRadius={4}
 					borderColor="#dedede"
+					data-testid="event-card"
 				>
 					<Box className={classes.match}>{name}</Box>
 					<Box padding={2}>
@@ -139,6 +140,7 @@ const Event: FC<IEvent> = ({
 											? classes.btnSelected
 											: classes.button
 									}
+									data-testid="select-btn"
 									onClick={() =>
 										handleSelections(
 											team.id,

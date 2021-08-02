@@ -9,7 +9,7 @@ import { Selection, EventCard, Loader, Error } from "./components";
 import { useFetch } from "./utils/useFetch";
 import { AppContext } from "./utils/globalState/store";
 
-const App = () => {
+const App = (): JSX.Element => {
 	const useStyles = makeStyles((theme) => ({
 		main: {
 			minHeight: "100vh",
@@ -27,6 +27,10 @@ const App = () => {
 			[theme.breakpoints.down("sm")]: {
 				height: "100vh",
 				width: "100%",
+			},
+			[theme.breakpoints.only("md")]: {
+				minHeight: "50%",
+				width: "50%",
 			},
 		},
 		icon: {
@@ -63,11 +67,16 @@ const App = () => {
 
 	return (
 		<Fragment>
-			<Box className={classes.main}>
+			<Box className={classes.main} data-testid="main-app">
 				{status === "fetching" && <Loader />}
 				{status === "error" && <Error />}
 				{data.length !== 0 && (
-					<Box className={classes.innerBox} bgcolor="white" borderRadius={4}>
+					<Box
+						className={classes.innerBox}
+						bgcolor="white"
+						borderRadius={4}
+						data-testid="show-data"
+					>
 						<Box
 							display="flex"
 							justifyContent="flex-end"
