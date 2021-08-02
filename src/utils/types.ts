@@ -22,6 +22,7 @@ export type SelectionType = {
 	price: number;
 };
 
+/** Selected Entity */
 export type SelectedType = {
 	id: string;
 	name: string;
@@ -30,6 +31,7 @@ export type SelectedType = {
 	type: string;
 };
 
+/** Action types for reducer */
 export enum ActionType {
 	FETCHING_DATA = "FETCHING_DATA",
 	FETCHED_DATA = "FETCHED_DATA",
@@ -38,6 +40,7 @@ export enum ActionType {
 	DELETE_SELECTION = "DELETE_SELECTION",
 }
 
+/** type for initial state of the store */
 export type InitialState = {
 	data: ResponseType;
 	status: string;
@@ -45,6 +48,7 @@ export type InitialState = {
 	selections: SelectedType[];
 };
 
+/**type for event component props**/
 export interface IEvent {
 	name: string;
 	teamSelections: SelectionType[];
