@@ -19,7 +19,8 @@ const Selection: FC<SelectedType> = ({ name, price, type, id, marketID }) => {
 			textTransform: "capitalize",
 		},
 		box: {
-			borderBottom: "1px solid #c4c4c4",
+			borderBottom: "1px solid #dedede",
+			paddingBottom: "20px",
 			"&:last-child": {
 				borderBottom: "none",
 			},

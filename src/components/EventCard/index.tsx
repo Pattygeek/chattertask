@@ -25,7 +25,8 @@ const Event: FC<IEvent> = ({
 			textAlign: "center",
 			padding: "6px 0",
 			width: "130px",
-			background: "#f7f7f7",
+			border: "1px solid #eaf3ee",
+			background: "#eaf3ee",
 			cursor: "pointer",
 			"&:hover": {
 				background: "#2E8B57",
@@ -40,13 +41,15 @@ const Event: FC<IEvent> = ({
 			background: "#2E8B57",
 			color: "whitesmoke",
 			cursor: "pointer",
+			border: "1px solid #2E8B57",
 		},
 		scorerBtn: {
 			borderRadius: "4px",
 			textAlign: "center",
 			padding: "6px 0",
 			width: "100px",
-			background: "#f7f7f7",
+			background: "#eaf3ee",
+			border: "1px solid #eaf3ee",
 			cursor: "pointer",
 			"&:hover": {
 				background: "#2E8B57",
@@ -60,6 +63,8 @@ const Event: FC<IEvent> = ({
 			width: "100px",
 			background: "#2E8B57",
 			cursor: "pointer",
+			border: "1px solid #2E8B57",
+			color: "whitesmoke",
 		},
 		match: {
 			textAlign: "center",
@@ -83,7 +88,9 @@ const Event: FC<IEvent> = ({
 	const classes = useStyles();
 
 	//context
-	const { dispatch } = useContext(AppContext);
+	const { state, dispatch } = useContext(AppContext);
+
+	const { selections } = state;
 
 	const [selectedTeam, setSelectedTeam] = useState({
 		name: "",
@@ -124,6 +131,16 @@ const Event: FC<IEvent> = ({
 	};
 
 	// console.log(selected);
+	const select = (name: string) => {
+		let selected: boolean | undefined = undefined;
+
+		for (let i = 0; i < selections.length; i++) {
+			if (selections[i].name === name) {
+				selected = true;
+			}
+		}
+		return selected;
+	};
 
 	return (
 		<>
@@ -141,11 +158,8 @@ const Event: FC<IEvent> = ({
 							{teamSelections?.map((team: SelectionType) => (
 								<Box
 									key={team.id}
-									boxShadow={1}
 									className={
-										selectedTeam.name === team.name
-											? classes.btnSelected
-											: classes.button
+										select(team.name) ? classes.btnSelected : classes.button
 									}
 									onClick={() =>
 										handleSelectedTeam(
@@ -170,11 +184,10 @@ const Event: FC<IEvent> = ({
 								{playerSelections?.map((player: SelectionType) => (
 									<Box
 										className={
-											selectedPlayer.name === player.name
+											select(player.name)
 												? classes.scorerBtnSelected
 												: classes.scorerBtn
 										}
-										boxShadow={1}
 										key={player.id}
 										onClick={() =>
 											handleSelectedPlayer(
